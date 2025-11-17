@@ -164,11 +164,51 @@
     "content": "\ud83e\udd16 Frames: Hey there! How can I help you today?"
   },
   {
-    "role": "human",
+    "role": "ai",
     "content": "walk man.png"
   },
   {
     "role": "system",
     "content": "\ud83e\ude70 GIF for 'walk' saved as walk_man.gif"
+  },
+  {
+    "role": "ai",
+    "content": "hello"
+  },
+  {
+    "role": "system",
+    "content": "\ud83e\udd16 Frames: Hey there! How can I help you today?"
+  },
+  {
+    "role": "ai",
+    "content": "walk man.png"
+  },
+  {
+    "role": "system",
+    "content": "\ud83e\ude70 Motion GIF saved as images/walk-1.gif"
+  },
+  {
+    "role": "ai",
+    "content": "hi"
+  },
+  {
+    "role": "system",
+    "content": "\ud83e\udd16 Frames: Hey there! How can I help you today?"
+  },
+  {
+    "role": "ai",
+    "content": "hey"
+  },
+  {
+    "role": "system",
+    "content": "\ud83e\udd16 Frames: Hey there! How can I help you today?"
+  },
+  {
+    "role": "human",
+    "content": "walk man.png"
+  },
+  {
+    "role": "system",
+    "content": "\ud83e\ude70 Motion GIF saved as images/man-1.gif"
   }
 ]
