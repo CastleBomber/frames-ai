@@ -9,24 +9,24 @@
                  and generate motion poses from user commands
 
     Example Usage:
-    pixelate zeus.png
-    pixelate 64x64 zeus.png
-    walk
-    run
-    sit 
-    jump
-    turn
+        pixelate man.png
+        pixelate 64x64 man.png
+        walk man.png
+        run
+        sit 
+        jump
+        turn
 
-
-    source .venv/bin/activate
-    deactivate
-    python3 main.py
-    memory.json
+    Notes:
+        source .venv/bin/activate
+        deactivate
+        python3 main.py
+        memory.json
 *********************************************************
 """
 import os, json, re, sys, signal
 from dotenv import load_dotenv
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage, HumanMessage, AIMessage
 from pose_engine import *
 

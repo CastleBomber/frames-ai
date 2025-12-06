@@ -1,3 +1,19 @@
 Tools
 handling locally vs sending it to the model
 
+# Pose skeletons
+Open-MMLAB -> mmpose/projects -> rtmpose
+versus
+rtmlib
+
+
+# My Code Pipeline
+User command
+     ↓
+RTMPose
+     ↓ (multiple frames)
+Skeleton PNGs
+     ↓
+Stable Diffusion (controlnet)
+     ↓
+Full animation GIF

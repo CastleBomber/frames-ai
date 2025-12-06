@@ -1,13 +1,15 @@
-from PIL import Image # opening images, resizing, pixelation
+from PIL import Image           # opening images, resizing, pixelation
+from rtmlib import RTMPose      # creates skeletons of characters
 from sd_engine import SDEngine
-import imageio # saving GIFs
+import imageio                  # saving GIFs
 import numpy as np
-import re, os # parsing commands
+import re, os                   # parsing commands
 
 class PoseEngine:
     """Detects pose or motion commands and handles them"""
 
     def __init__(self):
+        self.rtmpose = RTMPose("models/rtmpose-s.onnx")
         self.sd = SDEngine()
         self.pose_keywords = {
             "pixelate": "Generate pixelated character",
@@ -65,6 +67,9 @@ class PoseEngine:
 
         return None 
 
+    def pil_to_numpy(self, img):
+        return np.array(img.convert("RGB"))
+
     def handle_pose(self, keyword, user_input=None):
         """Handle pose command based on keyword input"""
         action = self.pose_keywords[keyword]
@@ -90,24 +95,48 @@ class PoseEngine:
 
         # --- Motion commands
         elif keyword in ["walk", "run", "jump"]:
-            # 1. Find pose skeleton frames for ControlNet
-            pose_dir = os.path.join("poses", keyword)
-            pose_frames = [
-                os.path.join(pose_dir, f) 
-                for f in sorted(os.listdir(pose_dir))
+            #images_dir = os.path.join("images", keyword)
+            images_dir = "images"
+            input_image = [ # (Array as a safety measure)
+                os.path.join(images_dir, f) 
+                for f in sorted(os.listdir(images_dir))
                 if f.endswith(".png")
             ]
 
-            if not pose_frames:
+            if not input_image:
                 # Fallback if no pose skeletons exist yet
-                return self.create_basic_motion_gif(resolved_path, keyword)
+                pose_frames = self.generate_pose_sequence(resolved_path)
+                return self.create_sd_motion_gif(resolved_path, user_input, pose_frames)
 
             # Use Stable Diffusion animation
-            return self.create_sd_motion_gif(resolved_path, user_input, pose_frames)
+            return self.create_sd_motion_gif(resolved_path, user_input, input_image)
 
         return f"🩰 PoseEngine: {action} (simulation only for now)."
 
-    def pixelate_image(self, image_path, custom_size=None, pixel_size=10):
+    def generate_skeleton_frame(self, img_path, frame_id):
+        img = Image.open(img_path)
+
+        np_img = self.pil_to_numpy(img)
+        keypoints = self.rtmpose(np_img)
+
+        draw = ImageDraw.Draw(img)
+
+        # draw joints
+        for (x, y, conf) in keypoints:
+            draw.ellipse((x-3, y-3, x+3, y+3), fill="red")
+
+        out_path = f"images/pose_{frame_id}.png"
+        img.save(out_path)
+        return out_path
+    
+    def generate_pose_sequence(self, img_path, num_frames=6):
+        paths = []
+        for i in range(num_frames):
+            frame = self.generate_skeleton_frame(img_path, i)
+            paths.append(frame)
+        return paths
+
+    def pixelate_image(self, image_path, custom_size=None):
         """
         Pixelates an image based on either:
         -A fixed custom size, ex: 64x64, OR
@@ -119,20 +148,23 @@ class PoseEngine:
             pixel_size (int): Pixelation strength when no custom size is given
 
         Example usage:
+            pixelate [optional WxH] [filename]
             pixelate zeus.png
             pixelate 64x64 zeus.png
         """
         # --- Load the original image ---
         img = Image.open(image_path)
 
-        if custom_size:
-            # Use fixed dimensions like 64x64
-            small = img.resize(custom_size, Image.NEAREST)
-        else:
-            small = img.resize((img.width // pixel_size, img.height // pixel_size), Image.NEAREST)
+        # --- Choose pixel target dimensions ---
+        target_size = custom_size if custom_size else (32, 32)
 
+        # Downscale to small pixel grid
+        small = img.resize(target_size, Image.NEAREST)
+
+        # Upscale back to original size for blocky pixels
         pixelated = small.resize(img.size, Image.NEAREST)
 
+        # Save result using next sequential filename
         base_filename = os.path.basename(image_path)
         pixel_image_name = self.generate_next_filename(base_filename)
 

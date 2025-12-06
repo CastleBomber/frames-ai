@@ -1,6 +1,7 @@
 mkdir langchain-agent
 cd langchain-agent
 python3 -m venv .venv
+python3 main.py
 
 # (.venv) virtual environment similar to a shell
 source .venv/bin/activate   # (on Windows: .venv\Scripts\activate)

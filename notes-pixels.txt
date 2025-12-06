@@ -1,0 +1,17 @@
+Classic retro consoles
+8×8 — earliest sprites (Atari, very old arcade)
+16×16 — NES, early Game Boy
+32×32 — SNES, Genesis
+64×64 — larger RPG portraits, bosses, modern pixel-art “HD” style
+
+
+Character sprites:
+16×16 → “retro cute”
+32×32 → “retro detailed”
+64×64 → “modern pixel art, lots of detail”
+
+
+Most famous pixel sizes
+16×16 → Super Mario Bros., Zelda (NES), Final Fantasy I
+32×32 → Chrono Trigger, Final Fantasy VI
+64×64 → Many modern indie pixel games (Stardew Valley uses ~16 but upscale)
