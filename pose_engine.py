@@ -172,36 +172,6 @@ class PoseEngine:
 
         return f"🩰 Pixelated image saved as {pixel_image_name}"
 
-    def create_basic_motion_gif(self, image_path, keyword):
-        """
-        Create a basic placeholder motion GIF
-        Output goes into /images and follows sequential naming
-        """
-        img = Image.open(image_path).convert("RGBA")
-        frames = []
-
-        # Simple wobble animation: 0px, 4px, 0px, -4px ...
-        offsets = [0, 4, 0, -4]
-
-        for offset in offsets * 2:  # 8-frame loop
-            frame = Image.new("RGBA", img.size)
-            frame.paste(img, (offset, 0))
-            frames.append(frame)
-
-        # Builds the GIF a name, ex: images/man-1.gif
-        base_filename = os.path.splitext(os.path.basename(image_path))[0]  # Set to "man"
-        gif_name = self.generate_gif_name(base_filename)
-
-        frames[0].save(
-            gif_name,
-            save_all=True,
-            append_images=frames[1:],
-            duration=140, # 140ms per frame
-            loop=0
-        )
-
-        return f"🩰 Motion GIF saved as {gif_name}"
-
     def create_sd_motion_gif(self, image_path, user_prompt, pose_sequence_paths):
         """
         pose_sequence_paths: list of pose skeleton images (openpose PNGs)
