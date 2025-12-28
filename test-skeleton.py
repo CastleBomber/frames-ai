@@ -7,20 +7,10 @@ Usage:
 """
 
 import sys, os
+import cv2
 import numpy as np
 from PIL import Image, ImageDraw
-from rtmlib import RTMPose 
-
-# ---- CONFIG ----
-TARGET_SIZE = (1024, 1024)
-
-# COCO-style sample skeleton connections
-# (Should later swap to the exact indexing your RTMPose model uses)
-SKELETON_CONNECTIONS = [
-    (0,1),(1,2),(2,3),(3,4),          # right arm
-    (0,5),(5,6),(6,7),(7,8),          # left arm
-    (0,9),(9,10),(10,11),(11,12),     # body/legs
-]
+from rtmlib import Wholebody, draw_skeleton, RTMPose 
 
 # ---- MAIN TEST ----
 def main():
@@ -34,65 +24,35 @@ def main():
         return
 
     print(f"📸 Loading image: {img_path}")
-    orig = Image.open(img_path).convert("RGB")
+    img = cv2.imread(img_path)
+    if img is None:
+        print("❌ Failed to load image")
+        return
 
-    print("🧠 Loading RTMPose model...")
-    model = RTMPose(
-        "models/rtmpose-s.onnx",
-        model_input_size=(192,256), # (W, H)
+
+    print("🧠 Loading RTMPose (Wholebody) model...")
+    wholebody = Wholebody(
+        to_openpose=False,
+        mode="balanced",            # good default
+        backend="onnxruntime"       # CPU-safe
     )
 
-    # RTMLib handles resizing internally
-    np_img = np.array(orig)
-    outputs = model(np_img)
+    print("🦴 Running pose estimation...")
+    keypoints, scores = wholebody(img)
 
-    # outputs shape: (num_people, num_keypoints, 4)
-    keypoints = outputs[0]   # first person
-
-    print("🦴 Rendering skeleton...")
-    canvas = Image.new("RGB", TARGET_SIZE, (0, 0, 0))
-    draw = ImageDraw.Draw(canvas)
-
-    model_w, model_h = 192, 256
-    sx = TARGET_SIZE[0] / model_w
-    sy = TARGET_SIZE[1] / model_h
-
-    # ---- Draw joints ----
-    for kp in keypoints:
-        x = float(kp[0][0])
-        y = float(kp[1][0])
-        conf = float(kp[2][0])
-
-        if conf < 0.1:
-            continue
-
-        draw.ellipse(
-            (x*sx-3, y*sy-3, x*sx+3, y*sy+3),
-            fill=(255, 255, 255)
-        )
-
-    # ---- Draw bones ----
-    for a, b in SKELETON_CONNECTIONS:
-        if a < len(keypoints) and b < len(keypoints):
-            xa = float(keypoints[a][0][0])
-            ya = float(keypoints[a][1][0])
-            ca = float(keypoints[a][2][0])
-
-            xb = float(keypoints[b][0][0])
-            yb = float(keypoints[b][1][0])
-            cb = float(keypoints[b][2][0])
-
-            if ca > 0.1 and cb > 0.1:
-                draw.line(
-                    (xa*sx, ya*sy, xb*sx, yb*sy),
-                    fill=(255, 255, 255),
-                    width=3
-                )
+    print("🎨 Rendering skeleton...")
+    vis = draw_skeleton(
+        img.copy(),
+        keypoints,
+        scores,
+        kpt_thr=0.1
+    )
 
     os.makedirs("tests", exist_ok=True)
-    canvas.save("tests/test-output.png")
+    out_path = "tests/pose_vis.png"
+    cv2.imwrite(out_path, vis)
 
-    print("✅ Skeleton generated")
+    print(f"✅ Skeleton saved to {out_path}")
 
 if __name__ == "__main__":
     main()
