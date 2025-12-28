@@ -53,14 +53,15 @@ def main():
     canvas = Image.new("RGB", TARGET_SIZE, (0, 0, 0))
     draw = ImageDraw.Draw(canvas)
 
-    sx = TARGET_SIZE[0] / orig.width
-    sy = TARGET_SIZE[1] / orig.height
+    model_w, model_h = 192, 256
+    sx = TARGET_SIZE[0] / model_w
+    sy = TARGET_SIZE[1] / model_h
 
-    # Draw joints
+    # ---- Draw joints ----
     for kp in keypoints:
-        x = float(kp[0])
-        y = float(kp[1])
-        conf = float(kp[2])
+        x = float(kp[0][0])
+        y = float(kp[1][0])
+        conf = float(kp[2][0])
 
         if conf < 0.1:
             continue
@@ -70,7 +71,7 @@ def main():
             fill=(255, 255, 255)
         )
 
-    # Draw bones
+    # ---- Draw bones ----
     for a, b in SKELETON_CONNECTIONS:
         if a < len(keypoints) and b < len(keypoints):
             xa = float(keypoints[a][0][0])
