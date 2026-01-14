@@ -252,11 +252,35 @@
     "content": "\ud83e\uddec SD Motion GIF saved as images/man-1.gif"
   },
   {
-    "role": "human",
+    "role": "ai",
     "content": "walk man.png"
   },
   {
     "role": "system",
     "content": "\ud83e\uddec SD Motion GIF saved as images/man-2.gif"
+  },
+  {
+    "role": "human",
+    "content": "pixelate 64x64 cb.png"
+  },
+  {
+    "role": "system",
+    "content": "\ud83e\ude70 Pixelated image saved as images/cb-1.png"
+  },
+  {
+    "role": "human",
+    "content": "pixelate 32x32 cb.png"
+  },
+  {
+    "role": "system",
+    "content": "\ud83e\ude70 Pixelated image saved as images/cb-2.png"
+  },
+  {
+    "role": "human",
+    "content": "pixelate 128x128 cb.png"
+  },
+  {
+    "role": "system",
+    "content": "\ud83e\ude70 Pixelated image saved as images/cb-3.png"
   }
 ]

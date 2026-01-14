@@ -2,14 +2,19 @@
 """
 ********************************************************
     Project: Frames AI
-    Version: 0x1
+    Version: 2.0
     Author: CBOMBS
     Date:   November 8th, 2025
+    Script: main.py
     Description: An AI animation assitant that helps build storyboards 
                  and generate motion poses from user commands
 
     Example Usage:
-        pixelate man.png
+        source .venv/bin/activate
+        deactivate
+        python3 main.py
+
+        pixelate man.pn
         pixelate 64x64 man.png
         walk man.png
         run
@@ -18,9 +23,6 @@
         turn
 
     Notes:
-        source .venv/bin/activate
-        deactivate
-        python3 main.py
         memory.json
 *********************************************************
 """

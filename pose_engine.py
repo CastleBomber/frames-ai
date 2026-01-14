@@ -1,7 +1,11 @@
+#!/usr/bin/env python3
+"""
+Script: pose_engine.py
+Version: 2.0
+"""
 from PIL import Image           # opening images, resizing, pixelation
 from rtmlib import RTMPose      # creates skeletons of characters
 from sd_engine import SDEngine
-import imageio                  # saving GIFs
 import numpy as np
 import re, os                   # parsing commands
 
