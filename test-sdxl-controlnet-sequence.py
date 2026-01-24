@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
 test-sdxl-controlnet-sequence.py
+
+Version: 1.3
 Step 5: Turn pose frames into "AI animation" frames using SDXL + ControlNet(OpenPose).
 
 What it does:

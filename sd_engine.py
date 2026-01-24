@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+"""
+********************************************************
+    sd_engine.py
+    Version: 1.3 (current testing environment)
+    Version: 2.0 (compatible)
+*********************************************************
+"""
 from diffusers import StableDiffusionXLControlNetPipeline, ControlNetModel
 import torch
 from PIL import Image
