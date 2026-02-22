@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-walk_sequence.py
+test_walk_sequence.py
 Version: 1.1
 Step 4: Generate a simple walk-cycle skeleton sequence from a single image.
 
@@ -14,7 +14,7 @@ What it does:
 
 Usage:
   source .venv/bin/activate
-  python3 test-walk-sequence.py man.png
+  python3 test_walk_sequence.py man.png
 
 Creates:
   tests/walk_pose_00.png ... tests/walk_pose_11.png   (skeleton-on-black frames)

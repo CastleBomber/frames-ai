@@ -8,14 +8,13 @@
 """
 from diffusers import StableDiffusionXLControlNetPipeline, ControlNetModel
 import torch
+import numpy as np
 from PIL import Image
 
 
 class SDEngine:
     """
-    SDXL + ControlNet inference engine.
-    - Uses SDXL base model + an OpenPose SDXL controlnet.
-    - Exposes generate_pose_frame(...) for single-frame generation.
+    SDXL + ControlNet engine (OpenPose conditioning)
     """
 
     # Model choices
@@ -34,8 +33,11 @@ class SDEngine:
             else:
                 self.device = "cpu"
 
-        # Float16 only on cuda/mps; cpu should be float32
-        self.dtype = torch.float16 if self.device in ("cuda", "mps") else torch.float32
+        # Use float16 only on CUDA; float32 on MPS and CPU
+        if self.device == "cuda":
+            self.dtype = torch.float16
+        else:
+            self.dtype = torch.float32
 
         # Load controlnet (SDXL-compatible weights)
         self.controlnet = ControlNetModel.from_pretrained(
@@ -83,7 +85,7 @@ class SDEngine:
             _ = self.pipe(
                 prompt="warmup",
                 image=Image.new("RGB", (1024, 1024), (0, 0, 0)),
-                num_inference_steps=1
+                num_inference_steps=1,
             )
         except Exception:
             pass
@@ -106,7 +108,6 @@ class SDEngine:
         - pose_image: PIL image used as the ControlNet conditioning (openpose skeleton)
         - returns: PIL.Image
         """
-        
 
         # deterministic generator when seed provided
         generator = None
@@ -129,5 +130,10 @@ class SDEngine:
             controlnet_conditioning_scale=controlnet_conditioning_scale,
             generator=generator,
         )
+
+        # --- DEBUG: Check generated image ---
+        img = out.images[0]
+        arr = np.array(img)
+        print(f"🧪 Generated image: min={arr.min()}, max={arr.max()}, mean={arr.mean():.2f}")
 
         return out.images[0]

@@ -30,7 +30,7 @@ import os, json, re, sys, signal
 from dotenv import load_dotenv
 from langchain_community.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage, HumanMessage, AIMessage
-from pose_engine import *
+from app.pose.pose_engine import *
 
 # --- Setup ---
 load_dotenv()

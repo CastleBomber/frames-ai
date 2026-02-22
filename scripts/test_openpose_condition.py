@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-test-openpose-condition.py
+test_openpose_condition.py
 
 Version: 1.2
 Step 4: Generate OpenPose-style conditioning images for SDXL ControlNet.
@@ -14,7 +14,7 @@ What it does:
 
 Usage:
     source .venv/bin/activate
-    python3 test-openpose-condition.py man.png
+    python3 test_openpose_condition.py man.png
 """
 
 import os, sys

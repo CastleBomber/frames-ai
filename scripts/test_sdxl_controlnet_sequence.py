@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-test-sdxl-controlnet-sequence.py
+test_sdxl_controlnet_sequence.py
 
 Version: 1.3
 Step 5: Turn pose frames into "AI animation" frames using SDXL + ControlNet(OpenPose).
@@ -13,12 +13,14 @@ What it does:
   2) tests/sdxl_walk.gif
 
 Usage:
+  cd /Users/cbombs/github/frames-ai
   source .venv/bin/activate
-  python3 test-sdxl-controlnet-sequence.py \
-    --prompt "pixel art hero, clean outline, consistent character, plain background" \
-    --seed 123 \
-    --steps 30 \
-    --cfg 5.0
+
+  python3 -m scripts.test_sdxl_controlnet_sequence \
+  --prompt "a pixel art hero, clean outline, consistent character, plain background" \
+  --seed 123 \
+  --steps 20 \
+  --cfg 5.0
 """
 
 import os
@@ -27,7 +29,7 @@ import argparse
 from PIL import Image
 import imageio
 
-from sd_engine import SDEngine
+from app.diffusion.sd_engine import SDEngine
 
 
 def main():

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-test-sdxl-controlnet-one.py
+test_sdxl_controlnet_one.py
 
 Version: 1.3
 Step 5A: One-frame SDXL+ControlNet sanity check (fastest debug).
@@ -11,11 +11,14 @@ What it does:
 - Generates ONE SDXL+ControlNet output frame
 
 Usage:
+  cd /Users/cbombs/github/frames-ai
   source .venv/bin/activate
-  python3 test-sdxl-controlnet-one.py \
-    --pose tests/walk_pose_00.png \
-    --prompt "character, clean outline, consistent design, plain background" \
-    --seed 123 --steps 20 --cfg 4.5 --cond 1.0 --size 768
+
+  python3 -m scripts.test_sdxl_controlnet_one \
+  --pose tests/walk_pose_00.png \
+  --prompt "character, clean outline, consistent design, plain background" \
+  --seed 123 --steps 20 --cfg 4.5 --cond 1.0 --size 768
+
 
 Output:
   tests/sdxl_debug.png
@@ -24,7 +27,7 @@ Output:
 import os, argparse
 import numpy as np
 from PIL import Image
-from sd_engine import SDEngine
+from app.diffusion.sd_engine import SDEngine
 
 def main():
     p = argparse.ArgumentParser()
@@ -40,7 +43,7 @@ def main():
 
     os.makedirs("tests", exist_ok=True)
 
-    pose_img = Image.open(args.pose).convert("RGB").resize((1024, 1024), Image.NEAREST)
+    pose_img = Image.open(args.pose).convert("RGB").resize((args.size, args.size), Image.NEAREST)
     arr = np.asarray(pose_img)
     print(f"🧪 Pose pixels min={arr.min()} max={arr.max()} (max should be > 0)")
 

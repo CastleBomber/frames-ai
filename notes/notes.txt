@@ -15,3 +15,7 @@ deactivate
 
 # Github Marketplace Openai playground
 pip install azure-ai-inference azure-core
+
+# Telling Python: “These directories are modules. Allow imports from them.”
+# may be needed for Virtualenv setups
+__init__.py

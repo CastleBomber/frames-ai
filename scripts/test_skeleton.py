@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script: test-skeleton.py
+Script: test_skeleton.py
 Test: RTMPose → Skeleton Render
 Version: 1.0
 
@@ -14,7 +14,7 @@ What it does:
 
 Usage:
   source .venv/bin/activate
-  python3 test-skeleton.py man.png
+  python3 test_skeleton.py man.png
 
 Notes:
 - Uses OpenCV for image loading and saving.
