@@ -2,7 +2,8 @@
 """
 test_sdxl_controlnet_one.py
 
-Version: 1.3
+Version: 1.3 (**Current script testing**)
+
 Step 5A: One-frame SDXL+ControlNet sanity check (fastest debug).
 
 What it does:
@@ -17,7 +18,7 @@ Usage:
   python3 -m scripts.test_sdxl_controlnet_one \
   --pose tests/walk_pose_00.png \
   --prompt "character, clean outline, consistent design, plain background" \
-  --seed 123 --steps 20 --cfg 4.5 --cond 1.0 --size 768
+  --seed 123 --steps 15 --size 512
 
 
 Output:
@@ -30,6 +31,9 @@ from PIL import Image
 from app.diffusion.sd_engine import SDEngine
 
 def main():
+    # ==============================================
+    # ARGUMENT PARSING
+    # ==============================================
     p = argparse.ArgumentParser()
     p.add_argument("--pose", required=True)
     p.add_argument("--prompt", required=True)
@@ -43,10 +47,16 @@ def main():
 
     os.makedirs("tests", exist_ok=True)
 
+    # ==============================================
+    # INPUT: Load and check pose image
+    # ==============================================
     pose_img = Image.open(args.pose).convert("RGB").resize((args.size, args.size), Image.NEAREST)
     arr = np.asarray(pose_img)
     print(f"🧪 Pose pixels min={arr.min()} max={arr.max()} (max should be > 0)")
 
+    # ==============================================
+    # GENERATION: Run SDXL + ControlNet
+    # ==============================================
     sd = SDEngine()
     out = sd.generate_pose_frame(
         text_prompt=args.prompt,
@@ -60,6 +70,9 @@ def main():
         height=args.size,
     )
 
+    # ==============================================
+    # OUTPUT: Save the generated image
+    # ==============================================
     out_path = "tests/sdxl_debug.png"
     out.save(out_path)
     print(f"✅ Wrote: {out_path}")

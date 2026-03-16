@@ -1,0 +1,20 @@
+"""
+Test with one frame first:
+
+python3 -m scripts.test_sdxl_controlnet_one \
+  --pose tests/walk_pose_00.png --prompt "..." --steps 15 --size 512
+
+"""
+
+
+
+
+
+"""
+
+python3 -m scripts.test_sdxl_controlnet_sequence \
+  --prompt "pixel art hero, clean outline, consistent character, plain background" \
+  --seed 123 --steps 15 --cfg 5.0 --size 512
+
+"""
+

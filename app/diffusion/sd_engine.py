@@ -2,16 +2,25 @@
 """
 ********************************************************
     sd_engine.py
-    Version: 1.3 (current testing environment)
-    Version: 2.0 (compatible)
+
+    SDXL + ControlNet engine for OpenPose conditioning
+    Version: 2.0
+
+    What it does:
+    - Loads the AI model that turns a stick‑figure pose (like an OpenPose skeleton) into a full image
+    - Automatically picks the best settings for your computer (GPU or CPU) to run fast and use less memory
+    - Provides generate_pose_frame() to create a single image from a pose skeleton and prompt
+
 *********************************************************
 """
-from diffusers import StableDiffusionXLControlNetPipeline, ControlNetModel
+from diffusers import StableDiffusionXLControlNetPipeline, ControlNetModel, EulerDiscreteScheduler
 import torch
 import numpy as np
 from PIL import Image
 
-
+# ==============================================
+# SDENGINE CLASS
+# ============================================== 
 class SDEngine:
     """
     SDXL + ControlNet engine (OpenPose conditioning)
@@ -22,7 +31,9 @@ class SDEngine:
     CONTROLNET_MODEL = "xinsir/controlnet-openpose-sdxl-1.0"
 
     def __init__(self, device: str = None):
-        # pick run-time device (auto-detect)
+        # --------------------------------------------
+        # Device detection
+        # -------------------------------------------- 
         if device:
             self.device = device
         else:
@@ -39,7 +50,10 @@ class SDEngine:
         else:
             self.dtype = torch.float32
 
-        # Load controlnet (SDXL-compatible weights)
+
+        # --------------------------------------------
+        # Load ControlNet and SDXL pipeline
+        # --------------------------------------------
         self.controlnet = ControlNetModel.from_pretrained(
             self.CONTROLNET_MODEL,
             torch_dtype=self.dtype,
@@ -55,7 +69,12 @@ class SDEngine:
         # Move pipeline to device and enable inference optimizations
         self.pipe.to(self.device)
 
+        # Set faster scheduler
+        self.pipe.scheduler = EulerDiscreteScheduler.from_config(self.pipe.scheduler.config)
+
+        # --------------------------------------------
         # Memory & speed tweaks
+        # --------------------------------------------
         try:
             # reduces memory usage at the cost of some speed
             self.pipe.enable_attention_slicing()
@@ -80,7 +99,7 @@ class SDEngine:
             except Exception:
                 pass
 
-        # (Optional) Warmup pass
+        # Warmup pass
         try:
             _ = self.pipe(
                 prompt="warmup",
@@ -90,6 +109,9 @@ class SDEngine:
         except Exception:
             pass
 
+    # ==============================================
+    # GENERATE FRAME METHOD
+    # ============================================== 
     def generate_pose_frame(
         self,
         text_prompt: str,
@@ -109,7 +131,9 @@ class SDEngine:
         - returns: PIL.Image
         """
 
-        # deterministic generator when seed provided
+        # --------------------------------------------
+        # Setup generator (for reproducible results)
+        # -------------------------------------------- 
         generator = None
         if seed is not None:
             try:
@@ -118,9 +142,14 @@ class SDEngine:
                 # fallback for older torch on mps
                 generator = torch.Generator().manual_seed(seed)
 
+        # --------------------------------------------
+        # Prepare pose image
+        # -------------------------------------------- 
         pose_image = pose_image.convert("RGB").resize((width, height), Image.NEAREST)
 
-        # run pipeline
+        # --------------------------------------------
+        # Run pipeline
+        # -------------------------------------------- 
         out = self.pipe(
             prompt=text_prompt,
             negative_prompt=negative_prompt,
@@ -131,7 +160,9 @@ class SDEngine:
             generator=generator,
         )
 
-        # --- DEBUG: Check generated image ---
+        # --------------------------------------------
+        # Debug: print pixel stats
+        # --------------------------------------------
         img = out.images[0]
         arr = np.array(img)
         print(f"🧪 Generated image: min={arr.min()}, max={arr.max()}, mean={arr.mean():.2f}")

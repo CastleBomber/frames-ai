@@ -17,10 +17,11 @@ Usage:
   source .venv/bin/activate
 
   python3 -m scripts.test_sdxl_controlnet_sequence \
-  --prompt "a pixel art hero, clean outline, consistent character, plain background" \
+  --prompt "pixel art hero, clean outline, consistent character, plain background" \
   --seed 123 \
-  --steps 20 \
-  --cfg 5.0
+  --steps 15 \
+  --cfg 5.0 \
+  --size 512
 """
 
 import os
@@ -43,6 +44,7 @@ def main():
     parser.add_argument("--out_dir", default="tests")
     parser.add_argument("--gif_name", default="sdxl_walk.gif")
     parser.add_argument("--gif_ms", type=int, default=120)
+    parser.add_argument("--size", type=int, default=768, help="Image size (width=height)")
     args = parser.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
@@ -71,6 +73,8 @@ def main():
             num_inference_steps=args.steps,
             guidance_scale=args.cfg,
             seed=args.seed,  # keep SAME seed across frames for consistency
+            width=args.size,
+            height=args.size,
         )
 
         out_path = os.path.join(args.out_dir, f"sdxl_frame_{i:02d}.png")
