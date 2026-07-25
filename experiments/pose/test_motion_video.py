@@ -19,7 +19,7 @@ Output:
 - outputs/poses/walk_pose_XX.png
 
 Usage:
-    python3 -m scripts.test_motion_video assets/walk.mp4
+    python3 -m experiments.pose.test_motion_video assets/walk.mp4
 """
 
 import os
@@ -107,7 +107,7 @@ def main(video_path: str, kpt_thr: float = 0.1):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage:")
-        print("python3 -m scripts.test_motion_video walk.mp4")
+        print("python3 -m experiments.pose.test_motion_video walk.mp4")
         sys.exit(1)
 
     main(sys.argv[1])

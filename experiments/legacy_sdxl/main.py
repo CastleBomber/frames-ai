@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 ********************************************************
-Project: Frames AI
+Project: Angels AI
 
 Author: CBOMBS
 Date:   November 8th, 2025
@@ -30,7 +30,7 @@ import os, json, re, sys, signal
 from dotenv import load_dotenv
 from langchain_community.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage, HumanMessage, AIMessage
-from app.pose.pose_engine import *
+from experiments.legacy_sdxl.app.pose.pose_engine import PoseEngine
 
 # --- Setup ---
 load_dotenv()
@@ -61,17 +61,17 @@ if os.path.exists(memory_file):
                   else AIMessage(m["content"]) for m in raw]
 else:
     memory = [SystemMessage(
-        "You are Frames AI — a creative assistant that helps build "
+        "You are Angels AI — a creative assistant that helps build "
         "storyboards and generate motion poses from user commands."
     )]
 
-print("\n\n🎞️ Frames AI ready!")
+print("\n\n🎞️ Angels AI ready!")
 
 # --- Simple greeting/chat handler ---
 def handle_small_talk(user_input):
     greetings = ["hello", "hi", "hey", "how's it going", "good morning", "good evening"]
     if any(g.lower() in user_input.lower() for g in greetings):
-        return "🤖 Frames: Hey there! How can I help you today?"
+        return "🤖 Angels: Hey there! How can I help you today?"
     return None
 
 # --- Handle abrupt exits ---
@@ -115,7 +115,7 @@ while True:
     # Normal AI response
     response = model.invoke(memory)
     ai_message = response.content
-    print("🤖 Frames:", ai_message)
+    print("🤖 Angels:", ai_message)
     memory.append(AIMessage(ai_message))
 
     # Auto save memory

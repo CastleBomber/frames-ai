@@ -24,10 +24,10 @@ Output:
 - tests/walk_v2_00.png ... walk_v2_11.png
 
 Usage:
-  cd /Users/cbombs/github/frames-ai
+  cd /Users/cbombs/github/angels-ai
   source .venv/bin/activate
 
-  python3 -m scripts.test_walk_cycle_v2 man.png
+  python3 -m experiments.pose.test_walk_cycle_v2 man.png
 """
 
 import os
@@ -207,9 +207,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) < 2:
         print("Usage:")
-        print("python3 -m scripts.test_walk_cycle_v2 man.png")
+        print("python3 -m experiments.pose.test_walk_cycle_v2 man.png")
         sys.exit(1)
 
     main(sys.argv[1])
-
-    

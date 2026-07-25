@@ -1,0 +1,13 @@
+# Historical experiment commands
+
+# Archived and known-broken OpenPose attempt:
+python3 experiments/archive/test_openpose_condition.py man.png
+
+# Legacy SDXL single-frame test:
+python3 -m experiments.legacy_sdxl.test_sdxl_controlnet_one \
+  --pose tests/walk_pose_00.png --prompt "..." --steps 15 --size 512
+
+# Legacy SDXL sequence test:
+python3 -m experiments.legacy_sdxl.test_sdxl_controlnet_sequence \
+  --prompt "pixel art hero, clean outline, consistent character, plain background" \
+  --seed 123 --steps 15 --cfg 5.0 --size 512

@@ -19,7 +19,7 @@ Output:
 - tests/openpose_condition.png
 
 Usage:
-    cd /Users/cbombs/github/frames-ai
+    cd /Users/cbombs/github/angels-ai
     source .venv/bin/activate
 
     python3 -m scripts.test_openpose_condition man.png

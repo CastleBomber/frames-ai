@@ -25,10 +25,10 @@ Output:
 - tests/sdxl_walk.gif
 
 Usage:
-  cd /Users/cbombs/github/frames-ai
+  cd /Users/cbombs/github/angels-ai
   source .venv/bin/activate
 
-  python3 -m scripts.test_sdxl_controlnet_sequence \
+  python3 -m experiments.legacy_sdxl.test_sdxl_controlnet_sequence \
     --prompt "full body character, simple proportions, clean outline, flat colors, white background" \
     --negative "blurry, deformed, bad anatomy, messy background, inconsistent character" \
     --seed 123 \
@@ -44,7 +44,7 @@ import argparse
 from PIL import Image
 import imageio
 
-from app.diffusion.sd_engine import SDEngine
+from experiments.legacy_sdxl.app.diffusion.sd_engine import SDEngine
 
 
 def main():
@@ -126,4 +126,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -11,13 +11,13 @@ What it does:
 - Generates ONE SDXL+ControlNet output frame
 
 Usage:
-  cd /Users/cbombs/github/frames-ai
+  cd /Users/cbombs/github/angels-ai
   source .venv/bin/activate
 
 Input:
   tests/walk_pose_00.png
 
-  python3 -m scripts.test_sdxl_controlnet_one \
+  python3 -m experiments.legacy_sdxl.test_sdxl_controlnet_one \
   --pose tests/walk_pose_00.png \
   --prompt "full body human character, standing pose, centered, simple proportions, clean lineart, flat colors, white background" \
   --negative "blurry, deformed, bad anatomy, extra limbs, messy background, abstract shapes" \
@@ -34,7 +34,7 @@ Output:
 import os, argparse
 import numpy as np
 from PIL import Image
-from app.diffusion.sd_engine import SDEngine
+from experiments.legacy_sdxl.app.diffusion.sd_engine import SDEngine
 
 def main():
     # ==============================================

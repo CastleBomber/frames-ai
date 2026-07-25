@@ -61,7 +61,7 @@ Example:
 
 from PIL import Image           # opening images, resizing, pixelation
 from rtmlib import RTMPose      # creates skeletons of characters
-from app.diffusion.sd_engine import SDEngine
+from experiments.legacy_sdxl.app.diffusion.sd_engine import SDEngine
 import numpy as np
 import re, os                   # parsing commands
 
@@ -261,5 +261,3 @@ class PoseEngine:
         )
 
         return f"🧬 SD Motion GIF saved as {gif_name}"
-    
-  
