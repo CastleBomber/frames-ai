@@ -26,6 +26,10 @@ test("server-renders the Angels AI website shell", async () => {
   assert.match(html, /Add a song/);
   assert.match(html, /Add your character/);
   assert.match(html, /Dance on beat/);
+  assert.match(html, /My Heroes/);
+  assert.match(html, /Play song/);
+  assert.match(html, /Upload your song/);
+  assert.match(html, /Step 7 complete/);
   assert.match(html, /Mint Halo/);
   assert.match(html, /Celestial Violet/);
   assert.match(html, /Golden Beat/);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type ChangeEvent } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 
 type Move = {
   name: string;
@@ -48,11 +48,11 @@ function Dancer({
   );
 }
 
-function Waveform() {
+function Waveform({ playing }: { playing: boolean }) {
   const bars = [18, 38, 62, 32, 72, 51, 84, 44, 67, 35, 78, 55, 91, 48, 69, 37, 82, 58, 73, 30, 64, 42, 76, 52, 88, 39, 71, 47, 80, 33, 59, 26];
   return (
-    <span className="waveform" aria-hidden="true">
-      {bars.map((height, index) => <i key={index} style={{ height: `${height}%` }} />)}
+    <span className={`waveform${playing ? " is-playing" : ""}`} aria-hidden="true">
+      {bars.map((height, index) => <i key={index} style={{ height: `${height}%`, animationDelay: `${index * -34}ms` }} />)}
     </span>
   );
 }
@@ -77,12 +77,29 @@ function fileName(event: ChangeEvent<HTMLInputElement>, fallback: string) {
 export default function Home() {
   const [selectedMoves, setSelectedMoves] = useState(() => new Set(["Groove", "Spin", "Bounce"]));
   const [previewing, setPreviewing] = useState(false);
+  const [songPlaying, setSongPlaying] = useState(false);
+  const [carouselOffset, setCarouselOffset] = useState(0);
+  const [heroesOpen, setHeroesOpen] = useState(false);
   const [song, setSong] = useState("Funky Nights");
   const [drawing, setDrawing] = useState("hero-drawing.png");
   const [created, setCreated] = useState(false);
 
   const selectedCount = selectedMoves.size;
   const moveSummary = useMemo(() => [...selectedMoves].join(", "), [selectedMoves]);
+  const orderedMoves = useMemo(
+    () => [...moves.slice(carouselOffset), ...moves.slice(0, carouselOffset)],
+    [carouselOffset],
+  );
+  const selectedPose = moves.find((move) => selectedMoves.has(move.name))?.pose ?? "hero";
+
+  useEffect(() => {
+    if (!heroesOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setHeroesOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [heroesOpen]);
 
   function toggleMove(name: string) {
     setSelectedMoves((current) => {
@@ -95,9 +112,14 @@ export default function Home() {
   }
 
   function createDance() {
+    if (!selectedCount) return;
     setCreated(true);
     setPreviewing(true);
     window.setTimeout(() => setCreated(false), 3200);
+  }
+
+  function rotateMoves(direction: -1 | 1) {
+    setCarouselOffset((current) => (current + direction + moves.length) % moves.length);
   }
 
   return (
@@ -112,7 +134,7 @@ export default function Home() {
             <span>Angels <strong>AI</strong></span>
           </a>
           <div className="topbar__actions">
-            <button className="heroes-button" type="button"><span aria-hidden="true">♙</span> My Heroes</button>
+            <button className="heroes-button" type="button" onClick={() => setHeroesOpen(true)} aria-expanded={heroesOpen}><span aria-hidden="true">♙</span> My Heroes</button>
             <button className="gold-button gold-button--small" type="button" onClick={() => document.querySelector("#creator")?.scrollIntoView({ behavior: "smooth" })}>
               <Sparkle small /> Create
             </button>
@@ -122,9 +144,9 @@ export default function Home() {
         <section className={`stage${previewing ? " is-previewing" : ""}`} id="stage">
           <StageLights />
           <div className="skills-badge"><span>★</span> {selectedCount} skill{selectedCount === 1 ? "" : "s"} equipped</div>
-          <div className="hero-dancer"><Dancer pose={previewing ? "groove" : "hero"} /></div>
+          <div className="hero-dancer"><Dancer pose={previewing ? selectedPose : "hero"} /></div>
           <div className="stage-platform"><i /><b /></div>
-          <button className="preview-button" type="button" onClick={() => setPreviewing((value) => !value)} aria-pressed={previewing}>
+          <button className="preview-button" type="button" onClick={() => setPreviewing((value) => !value)} aria-pressed={previewing} disabled={!selectedCount}>
             <span>{previewing ? "Ⅱ" : "▶"}</span>{previewing ? "Pause preview" : "Preview dance"}
           </button>
         </section>
@@ -136,9 +158,9 @@ export default function Home() {
           </header>
 
           <div className="moves-rail">
-            <button className="rail-arrow" type="button" aria-label="Previous moves">‹</button>
+            <button className="rail-arrow" type="button" aria-label="Rotate moves backward" onClick={() => rotateMoves(-1)}>‹</button>
             <div className="move-grid">
-              {moves.map((move) => {
+              {orderedMoves.map((move) => {
                 const selected = selectedMoves.has(move.name);
                 return (
                   <button
@@ -155,8 +177,9 @@ export default function Home() {
                 );
               })}
             </div>
-            <button className="rail-arrow" type="button" aria-label="Next moves">›</button>
+            <button className="rail-arrow" type="button" aria-label="Rotate moves forward" onClick={() => rotateMoves(1)}>›</button>
           </div>
+          <p className="sr-only" aria-live="polite">{orderedMoves[0].name} is first in the move carousel.</p>
         </section>
 
         <section className="creator" id="creator" aria-label="Three-step dance creator">
@@ -166,9 +189,9 @@ export default function Home() {
               <span className="music-tile" aria-hidden="true">♫</span>
               <span className="track-copy"><strong>{song}</strong><small>128 BPM · Funk<br />02:48</small></span>
               <label className="change-button">Change<input type="file" accept="audio/*" onChange={(event) => setSong(fileName(event, song))} /></label>
-              <button className="round-play" type="button" aria-label="Play song">▶</button>
-              <Waveform />
-              <time>2:48</time>
+              <button className="round-play" type="button" aria-label={songPlaying ? "Pause song" : "Play song"} aria-pressed={songPlaying} onClick={() => setSongPlaying((value) => !value)}>{songPlaying ? "Ⅱ" : "▶"}</button>
+              <Waveform playing={songPlaying} />
+              <time>{songPlaying ? "0:24" : "2:48"}</time>
             </div>
             <label className="upload-zone">
               <span className="upload-symbol">↥</span>
@@ -199,16 +222,33 @@ export default function Home() {
               <Dancer pose="groove" colorful />
               <span className="result-floor" />
             </div>
-            <button className="gold-button create-dance-button" type="button" onClick={createDance}>
-              <Sparkle /> {created ? "Your hero is alive!" : "Bring my hero to life"}
+            <button className="gold-button create-dance-button" type="button" onClick={createDance} disabled={!selectedCount}>
+              <Sparkle /> {created ? "Your hero is alive!" : selectedCount ? "Bring my hero to life" : "Choose a move first"}
             </button>
           </article>
         </section>
       </section>
 
+      {heroesOpen && (
+        <div className="heroes-scrim" onMouseDown={() => setHeroesOpen(false)}>
+          <aside className="heroes-panel" role="dialog" aria-modal="true" aria-labelledby="heroes-title" onMouseDown={(event) => event.stopPropagation()}>
+            <header><div><span className="panel-kicker">Current mock hero</span><h2 id="heroes-title">Your stage setup</h2></div><button type="button" onClick={() => setHeroesOpen(false)} aria-label="Close My Heroes" autoFocus>×</button></header>
+            <div className="hero-summary-stage"><Dancer pose={selectedPose} colorful /><span /></div>
+            <dl>
+              <div><dt>Moves</dt><dd>{selectedCount ? moveSummary : "None selected"}</dd></div>
+              <div><dt>Song</dt><dd>{song}</dd></div>
+              <div><dt>Character</dt><dd>{drawing}</dd></div>
+            </dl>
+            <button className="gold-button panel-action" type="button" disabled={!selectedCount} onClick={() => { setHeroesOpen(false); createDance(); }}>Preview this hero</button>
+          </aside>
+        </div>
+      )}
+
+      <div className={`creator-toast${created ? " is-visible" : ""}`} role="status" aria-live="polite"><Sparkle small /> Mock dance ready — previewing your selected moves.</div>
+
       <footer className="site-footer">
         <span><i /> Mint Halo</span><span><i /> Celestial Violet</span><span><i /> Golden Beat</span>
-        <p>Roadmap V4 · Interactive website shell</p>
+        <p>Roadmap V4 · Step 7 complete</p>
       </footer>
     </main>
   );
