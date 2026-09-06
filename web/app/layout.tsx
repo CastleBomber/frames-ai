@@ -6,17 +6,17 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://angels-ai-studio.sites.openai.com"),
-  title: "Angels AI — Make your hero dance",
+  metadataBase: new URL("https://dancing-angels-ai.richie-ucsb.chatgpt.site"),
+  title: "Dancing Angels AI — Make your hero dance",
   description: "Choose dance moves, add your art and music, and make your character dance on beat.",
   openGraph: {
-    title: "Angels AI — Make your hero dance",
+    title: "Dancing Angels AI — Make your hero dance",
     description: "Your art. Your music. Their moment.",
     images: [{ url: "/og.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Angels AI — Make your hero dance",
+    title: "Dancing Angels AI — Make your hero dance",
     description: "Your art. Your music. Their moment.",
     images: ["/og.png"],
   },

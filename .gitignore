@@ -9,6 +9,7 @@ __pycache__/
 build/
 dist/
 .venv/
+.venv-mlx/
 venv/
 memory.json
 images/
@@ -16,7 +17,9 @@ generated/
 *.gif
 .env
 node_modules
-tests/
+tests/*
+!tests/test_*.py
+!tests/conftest.py
 tests/saved/
 assets/
 outputs/
@@ -25,6 +28,7 @@ outputs/frames/
 outputs/videos/
 
 # Model weights
+models/Wan2.2-TI2V-5B*/
 models/*.onnx
 models/*.pth
 models/*.bin

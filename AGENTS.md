@@ -1,26 +1,30 @@
 # AGENTS.md
 
-## Project Goal
-Turn a user-provided character image into animated motion videos: run, dance, jump, walk.
+## Golden Goal
+Turn a user-provided character image into testable walking, running, jumping,
+or dancing videos.
 
-## Current Direction
-- Mixamo/Blender provides driver motion videos.
-- Wan-Animate is the target generation backend.
-- RTMPose / pose extraction work is prototype evidence.
-- SDXL + ControlNet sequence code is legacy/prototype, not the preferred backend.
+## Decision Rule
+The Golden Goal takes precedence over historical roadmaps, model choices, and
+motion-source choices. Mixamo, Wan-Animate, and RTMPose are optional tools, not
+product requirements.
+
+## Current Increment
+Prove a Mac-only vertical slice first:
+
+`character image + action prompt -> MLX image-to-video -> playable MP4`
+
+Then improve movement quality and add optional exact driver-video control.
 
 ## Working Rules
-- Audit before refactoring.
-- Preserve useful prototype scripts.
-- Do not delete roadmap, assets, or experiment history without approval.
-- Prefer a clean v2 pipeline under `src/angels_ai/`.
-- Keep old scripts under `legacy/` or `experiments/`.
-- Keep assets and outputs ignored.
+- Work incrementally and verify each vertical slice with a playable artifact.
+- Preserve useful experiments and the existing CUDA Wan integration.
+- Keep large models, user assets, generated outputs, and virtual environments ignored.
+- Keep production code under `src/dancing_angels_ai/`.
+- Do not treat roadmap completion as product completion.
 
-## Current Pipeline Target
-`character image + Mixamo/Blender motion video -> pose/face preprocessing -> Wan-Animate -> MP4`
-
-## Avoid
-- Big rewrites before audit.
-- Treating old scripts as production.
-- Assuming Mixamo feeds Wan-Animate directly.
+## Roadmap Updates
+- When updating a roadmap, move the superseded image into `roadmaps-ideas/archive/`.
+- Add sequential letter suffixes within each roadmap version: `v5A`, `v5B`, `v5C`, and so on.
+- Keep only the newest lettered image in `roadmaps-ideas/`; preserve older lettered images in the archive.
+- Update related Markdown status and evidence files whenever the roadmap changes.

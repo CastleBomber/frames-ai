@@ -13,13 +13,14 @@ async function render() {
   );
 }
 
-test("server-renders the Angels AI website shell", async () => {
+test("server-renders the Dancing Angels AI website shell", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>Angels AI — Make your hero dance<\/title>/i);
+  assert.match(html, /<title>Dancing Angels AI — Make your hero dance<\/title>/i);
+  assert.match(html, /Dancing Angels\s*<strong>AI<\/strong>/i);
   assert.match(html, /Choose your hero(?:&apos;|&#x27;|')s moves/);
   assert.match(html, /Preview dance/);
   assert.match(html, /Bring my hero to life/);

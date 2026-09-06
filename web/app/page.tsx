@@ -127,11 +127,11 @@ export default function Home() {
       <div className="ambient ambient--mint" aria-hidden="true" />
       <div className="ambient ambient--violet" aria-hidden="true" />
 
-      <section className="app-shell" aria-label="Angels AI dance creator">
+      <section className="app-shell" aria-label="Dancing Angels AI dance creator">
         <nav className="topbar">
-          <a className="brand" href="#stage" aria-label="Angels AI home">
+          <a className="brand" href="#stage" aria-label="Dancing Angels AI home">
             <WingMark />
-            <span>Angels <strong>AI</strong></span>
+            <span>Dancing Angels <strong>AI</strong></span>
           </a>
           <div className="topbar__actions">
             <button className="heroes-button" type="button" onClick={() => setHeroesOpen(true)} aria-expanded={heroesOpen}><span aria-hidden="true">♙</span> My Heroes</button>

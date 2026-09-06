@@ -1,10 +1,4 @@
-# Core app
-langchain>=0.1.0
-langchain-community>=0.3.0
-openai>=1.0.0
-python-dotenv>=1.0.0
-
-# Image, video, and pose extraction
+# Core image, video, and pose tooling
 Pillow>=10.0.0
 numpy>=1.26.0
 opencv-python>=4.9.0
@@ -12,16 +6,3 @@ imageio>=2.30.0
 imageio-ffmpeg>=0.5.0
 rtmlib>=0.0.13
 onnxruntime>=1.17.0
-
-# Legacy SDXL + ControlNet prototypes
-diffusers>=0.35.0
-torch>=2.2.0
-transformers>=4.40.0
-accelerate>=0.30.0
-safetensors>=0.4.0
-
-# Optional utilities
-regex>=2023.6.3
-
-# CLI / env
-click>=8.1.0

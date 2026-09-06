@@ -1,6 +1,6 @@
-# Angels AI — Website
+# Dancing Angels AI — Website
 
-Roadmap V4's visual website shell for Angels AI: choose dance skills, add a
+Roadmap V4's visual website shell for Dancing Angels AI: choose dance skills, add a
 song and character artwork, then create a beat-synced dance.
 
 This iteration is the interactive visual shell inspired by `golden-image-v3`.
