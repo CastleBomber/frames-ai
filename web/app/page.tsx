@@ -247,7 +247,7 @@ export default function Home() {
       <div className={`creator-toast${created ? " is-visible" : ""}`} role="status" aria-live="polite"><Sparkle small /> Mock dance ready — previewing your selected moves.</div>
 
       <footer className="site-footer">
-        <span><i /> Mint Halo</span><span><i /> Celestial Violet</span><span><i /> Golden Beat</span>
+        <span><i /> Electric Cyan</span><span><i /> Stage Violet</span><span><i /> Golden Beat</span>
         <p>Roadmap V4 · Step 7 complete</p>
       </footer>
     </main>
