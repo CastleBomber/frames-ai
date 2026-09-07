@@ -205,7 +205,7 @@ export default function Home() {
           <article className="creator-step character-step">
             <header><span className="step-number">2</span><h2>Add your character</h2></header>
             <label className="drawing-card">
-              <span className="drawing-paper"><span className="drawing-art"><Dancer pose="groove" colorful /></span></span>
+              <span className="drawing-paper"><span className="drawing-art"><img src="/hero-drawing-h.png" alt="Uploaded pencil drawing of a dancing hero" /></span></span>
               <span className="drawing-upload"><span>↥</span> {drawing}</span>
               <input type="file" accept="image/png,image/jpeg" onChange={(event) => setDrawing(fileName(event, drawing))} />
             </label>

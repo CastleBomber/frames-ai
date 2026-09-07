@@ -34,6 +34,7 @@ test("server-renders the Dancing Angels AI website shell", async () => {
   assert.match(html, /Blueprint Grid/);
   assert.match(html, /Holographic Polymer/);
   assert.match(html, /Golden Beat/);
+  assert.match(html, /hero-drawing-h\.png/);
   assert.match(html, /\/og\.png/);
   assert.doesNotMatch(html, /Your site is taking shape|react-loading-skeleton/);
 });
