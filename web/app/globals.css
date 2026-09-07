@@ -165,10 +165,25 @@ a { color: inherit; text-decoration: none; }
 
 .character-step { display: grid; grid-template-columns: 1fr 54px 1fr; grid-template-rows: 42px 224px; gap: 0 8px; }
 .character-step header { grid-column: 1 / -1; }
-.drawing-card { border: 1px solid rgba(92, 109, 127, .65); border-radius: 12px; padding: 12px; position: relative; cursor: pointer; background: #0b1321; }
-.drawing-paper { position: relative; height: 158px; overflow: hidden; display: block; border-radius: 10px; background: #efece0; border: 1px dashed #8c8a81; color: #d6a400; }
-.drawing-paper > span { position: absolute; z-index: 3; top: 12px; left: 13px; font-size: 25px; }.drawing-paper > i { position: absolute; right: 13px; top: 14px; color: #e25757; font-size: 24px; font-style: normal; }
-.drawing-paper .dancer { transform: translateX(-50%) scale(.38); transform-origin: top; top: 10px; }
+.drawing-card { border: 1px solid rgba(37, 230, 221, .46); border-radius: 12px; padding: 12px; position: relative; cursor: pointer; background: linear-gradient(150deg, #09162a, #050919); box-shadow: inset 0 0 24px rgba(37, 230, 221, .035); }
+.drawing-paper {
+  position: relative;
+  height: 158px;
+  overflow: hidden;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid rgba(37, 230, 221, .7);
+  background:
+    linear-gradient(rgba(37, 230, 221, .11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 230, 221, .11) 1px, transparent 1px),
+    radial-gradient(circle at 50% 45%, rgba(78, 67, 175, .28), #041226 72%);
+  background-size: 18px 18px, 18px 18px, auto;
+  box-shadow: inset 0 0 28px rgba(37, 230, 221, .09), 0 0 14px rgba(37, 230, 221, .08);
+}
+.drawing-paper::before { content: ""; position: absolute; inset: 10px; z-index: 1; border: 1px solid rgba(37, 230, 221, .36); border-radius: 5px; }
+.drawing-paper::after { content: "UPLOAD BLUEPRINT · PNG / JPG"; position: absolute; z-index: 4; left: 15px; bottom: 10px; color: rgba(111, 247, 238, .72); font: 8px var(--font-geist-mono); letter-spacing: .08em; }
+.drawing-art { position: absolute; z-index: 3; width: 102px; height: 126px; left: 50%; top: 10px; transform: translateX(-50%); overflow: hidden; border: 1px solid rgba(245, 242, 235, .88); border-radius: 9px; background: linear-gradient(145deg, #faf8f2, #e7e4dc); box-shadow: 0 8px 24px rgba(0, 0, 0, .4), 0 0 12px rgba(37, 230, 221, .15); }
+.drawing-art .dancer { transform: translateX(-50%) scale(.32); transform-origin: top; top: 8px; }
 .drawing-upload { height: 36px; display: flex; align-items: center; justify-content: center; gap: 7px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #d9dde0; font-size: 10px; }
 .drawing-upload span { color: var(--mint-halo); font-size: 18px; }
 .transformation-arrow { display: grid; place-items: center; align-content: center; color: var(--mint-halo); font-size: 36px; text-shadow: 0 0 12px rgba(37, 230, 221, .5); }
@@ -197,6 +212,12 @@ a { color: inherit; text-decoration: none; }
 
 .dancer { width: 146px; height: 330px; position: absolute; left: 50%; top: 0; transform: translateX(-50%); z-index: 3; filter: drop-shadow(0 18px 18px rgba(0, 0, 0, .45)); }
 .dancer span:not(.dancer__glow), .dancer i { display: block; position: absolute; background: linear-gradient(105deg, #777982, #f1f1f3 45%, #8b8c93); }
+.dancer--holographic span:not(.dancer__glow), .dancer--holographic i {
+  border: 1px solid rgba(226, 243, 255, .34);
+  background: linear-gradient(125deg, #624dd5 0%, #f8f3ff 22%, #70f1e8 43%, #d69aff 66%, #667cff 84%, #fbfbff 100%);
+  box-shadow: inset 8px 5px 14px rgba(255, 255, 255, .22), inset -7px -8px 15px rgba(44, 24, 112, .28), 0 0 8px rgba(121, 241, 234, .12);
+}
+.dancer--holographic .dancer__glow { background: linear-gradient(150deg, rgba(200, 92, 255, .22), rgba(37, 230, 221, .18)); filter: blur(31px); }
 .dancer__glow { position: absolute; width: 190px; height: 280px; left: -22px; top: 5px; border-radius: 50%; background: rgba(37, 230, 221, .08); filter: blur(35px); }
 .dancer__head { width: 55px; height: 64px; border-radius: 48% 48% 44% 44%; left: 45px; top: 0; box-shadow: inset -10px -6px 15px rgba(25, 27, 34, .3); }
 .dancer__head::after { content: ""; position: absolute; width: 26px; height: 7px; left: 15px; bottom: 12px; border-bottom: 1px solid rgba(31, 25, 39, .18); border-radius: 50%; }

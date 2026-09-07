@@ -35,7 +35,7 @@ function Dancer({
   colorful?: boolean;
 }) {
   return (
-    <div className={`dancer dancer--${pose}${colorful ? " dancer--colorful" : ""}`} aria-hidden="true">
+    <div className={`dancer dancer--${pose} ${colorful ? "dancer--colorful" : "dancer--holographic"}`} aria-hidden="true">
       <span className="dancer__glow" />
       <span className="dancer__head" />
       <span className="dancer__neck" />
@@ -205,12 +205,12 @@ export default function Home() {
           <article className="creator-step character-step">
             <header><span className="step-number">2</span><h2>Add your character</h2></header>
             <label className="drawing-card">
-              <span className="drawing-paper"><span>☆</span><Dancer pose="groove" colorful /><i>♡</i></span>
+              <span className="drawing-paper"><span className="drawing-art"><Dancer pose="groove" colorful /></span></span>
               <span className="drawing-upload"><span>↥</span> {drawing}</span>
               <input type="file" accept="image/png,image/jpeg" onChange={(event) => setDrawing(fileName(event, drawing))} />
             </label>
             <div className="transformation-arrow" aria-hidden="true"><span>→</span><Sparkle small /></div>
-            <div className="character-preview"><Dancer pose="groove" colorful /><Sparkle /><Sparkle small /></div>
+            <div className="character-preview"><Dancer pose="groove" /><Sparkle /><Sparkle small /></div>
           </article>
 
           <span className="flow-arrow" aria-hidden="true">⟶</span>
@@ -219,7 +219,7 @@ export default function Home() {
             <header><span className="step-number">3</span><h2>Dance on beat</h2></header>
             <div className={`result-stage${previewing ? " is-previewing" : ""}`}>
               <StageLights />
-              <Dancer pose="groove" colorful />
+              <Dancer pose="groove" />
               <span className="result-floor" />
             </div>
             <button className="gold-button create-dance-button" type="button" onClick={createDance} disabled={!selectedCount}>
@@ -233,7 +233,7 @@ export default function Home() {
         <div className="heroes-scrim" onMouseDown={() => setHeroesOpen(false)}>
           <aside className="heroes-panel" role="dialog" aria-modal="true" aria-labelledby="heroes-title" onMouseDown={(event) => event.stopPropagation()}>
             <header><div><span className="panel-kicker">Current mock hero</span><h2 id="heroes-title">Your stage setup</h2></div><button type="button" onClick={() => setHeroesOpen(false)} aria-label="Close My Heroes" autoFocus>×</button></header>
-            <div className="hero-summary-stage"><Dancer pose={selectedPose} colorful /><span /></div>
+            <div className="hero-summary-stage"><Dancer pose={selectedPose} /><span /></div>
             <dl>
               <div><dt>Moves</dt><dd>{selectedCount ? moveSummary : "None selected"}</dd></div>
               <div><dt>Song</dt><dd>{song}</dd></div>
@@ -247,7 +247,7 @@ export default function Home() {
       <div className={`creator-toast${created ? " is-visible" : ""}`} role="status" aria-live="polite"><Sparkle small /> Mock dance ready — previewing your selected moves.</div>
 
       <footer className="site-footer">
-        <span><i /> Electric Cyan</span><span><i /> Stage Violet</span><span><i /> Golden Beat</span>
+        <span><i /> Blueprint Grid</span><span><i /> Holographic Polymer</span><span><i /> Golden Beat</span>
         <p>Roadmap V4 · Step 7 complete</p>
       </footer>
     </main>
